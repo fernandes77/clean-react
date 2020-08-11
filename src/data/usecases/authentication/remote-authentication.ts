@@ -7,7 +7,7 @@ import { UnexpectedError } from '@/domain/errors/unexpected-error'
 export class RemoteAuthentication {
   constructor (
     private readonly url: string,
-    private readonly httpPostClient: HttpPostClient
+    private readonly httpPostClient: HttpPostClient<AuthenticationParams, AccountModel>
   ) {}
 
   async auth (params: AuthenticationParams): Promise<void> {
@@ -18,7 +18,6 @@ export class RemoteAuthentication {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok: break
       case HttpStatusCode.unauthorized: throw new InvalidCredentialsError()
-      case HttpStatusCode.badRequest: throw new UnexpectedError()
       default: throw new UnexpectedError()
     }
   }
